@@ -1,9 +1,11 @@
+import type { RedditPost, RedditPostQueryData } from "@/types";
+
 /**
  * Extract only relevant fields from a Reddit post
  * @param post - The Reddit post to extract data from
  * @returns The extracted data
  */
-export function extractPostData(post: any) {
+export function extractPostData(post: RedditPostQueryData['data']): RedditPost {
   return {
     id: post.id,
     title: post.title,

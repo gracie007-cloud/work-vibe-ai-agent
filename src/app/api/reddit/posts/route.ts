@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { extractPostData } from "../utils";
 
+import type { RedditPostQueryData } from "@/types";
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("q");
@@ -33,8 +35,9 @@ export async function GET(request: Request) {
 
     // Extract only relevant fields from each post
     const posts =
-      data.data?.children?.map((child: any) => extractPostData(child.data)) ||
-      [];
+      data.data?.children?.map((child: RedditPostQueryData) =>
+        extractPostData(child.data)
+      ) || [];
 
     return NextResponse.json({
       query,

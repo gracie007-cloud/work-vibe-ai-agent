@@ -1,6 +1,8 @@
 import { tool } from "ai";
 import { z } from "zod";
 
+import type { RedditComment } from "@/types";
+
 export const searchRedditComments = tool({
   description: "Search for comments on Reddit",
   inputSchema: z.object({
@@ -13,6 +15,6 @@ export const searchRedditComments = tool({
       `${process.env.NEXT_PUBLIC_API_URL}/api/reddit/comments?subreddit=${subreddit}&postId=${postId}&maxComments=${maxComments}`
     );
     const data = await response.json();
-    return data.comments.map((comment: any) => comment.body);
+    return data.comments.map((comment: RedditComment) => comment.body);
   },
 });

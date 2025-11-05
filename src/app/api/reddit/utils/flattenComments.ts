@@ -1,3 +1,5 @@
+import type { RedditComment, RedditCommentQueryData } from "@/types";
+
 /**
  * Flatten Reddit's nested comment structure
  * @param comments - The comments to flatten
@@ -5,12 +7,12 @@
  * @returns The flattened comments
  */
 export function flattenComments(
-  comments: any[],
+  comments: RedditCommentQueryData[],
   maxComments: number = 10
-): any[] {
-  const flattened: any[] = [];
+): RedditComment[] {
+  const flattened: RedditComment[] = [];
 
-  function traverse(children: any[]) {
+  function traverse(children: RedditCommentQueryData[]) {
     if (!children || flattened.length >= maxComments) return;
 
     for (const child of children) {
