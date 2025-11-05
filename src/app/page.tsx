@@ -16,6 +16,18 @@ export default function Chat() {
             switch (part.type) {
               case "text":
                 return <div key={`${message.id}-${i}`}>{part.text}</div>;
+              case "tool-searchRedditPosts":
+                return (
+                  <div key={`${message.id}-${i}`}>
+                    {JSON.stringify(part.output)}
+                  </div>
+                );
+              case "tool-searchRedditComments":
+                return (
+                  <div key={`${message.id}-${i}`}>
+                    {JSON.stringify(part.output)}
+                  </div>
+                );
             }
           })}
         </div>
