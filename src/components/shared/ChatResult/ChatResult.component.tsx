@@ -1,15 +1,17 @@
 import { UIMessage } from "@ai-sdk/react";
 import { Tool } from "../Tool";
 import { VibeScore } from "../VibeScore";
+import { DotsPulse } from "../DotsPulse";
 
 import type { RedditPost, RedditComment } from "@/types";
 
 interface ChatResultProps {
   messages: UIMessage[];
+  isStreaming?: boolean;
 }
 
-export default function ChatResult({ messages }: ChatResultProps) {
-  console.log(messages);
+export default function ChatResult({ messages, isStreaming }: ChatResultProps) {
+  console.debug(messages);
 
   return (
     <div className="w-full max-w-3xl bg-card border border-border rounded-lg p-6 shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-300">
@@ -61,6 +63,12 @@ export default function ChatResult({ messages }: ChatResultProps) {
             })}
           </div>
         ))}
+
+      {isStreaming && (
+        <div className="mt-4 w-fit border border-gray-200 rounded-md px-3 py-2.5 dark:bg-gray-800 dark:border-gray-700">
+          <DotsPulse />
+        </div>
+      )}
     </div>
   );
 }

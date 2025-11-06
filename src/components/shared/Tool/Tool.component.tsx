@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import Image from "next/image";
 
-import { DotsPulse } from "./components";
+import { DotsPulse } from "../DotsPulse";
 
 interface ToolProps {
   children: React.ReactNode;

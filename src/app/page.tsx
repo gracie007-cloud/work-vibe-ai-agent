@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export default function Chat() {
   const [input, setInput] = useState("");
-  const { messages, sendMessage } = useChat();
+  const { messages, status, sendMessage } = useChat();
 
   return (
     <div className="container mx-auto min-h-screen py-10">
@@ -44,7 +44,12 @@ export default function Chat() {
           </Button>
         </form>
 
-        <ChatResult messages={messages} />
+        {messages.length > 0 && (
+          <ChatResult
+            messages={messages}
+            isStreaming={status === "streaming"}
+          />
+        )}
       </div>
     </div>
   );
