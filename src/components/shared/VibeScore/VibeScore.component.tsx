@@ -1,16 +1,39 @@
-import { TrendingDown, AlertTriangle, TrendingUp } from "lucide-react";
+import { TrendingDown, TrendingUpDown, TrendingUp } from "lucide-react";
+import {
+  animate,
+  motion,
+  useMotionValue,
+  useTransform,
+  useMotionValueEvent,
+} from "motion/react";
+import { useEffect, useState } from "react";
+
+type VibeScoreData = {
+  companyName: string;
+  vibeScore: number;
+};
 
 interface VibeScoreProps {
-  data:
-    | {
-        companyName: string;
-        vibeScore: number;
-      }
-    | undefined;
+  data: VibeScoreData;
 }
 
 export default function VibeScore({ data }: VibeScoreProps) {
-  if (!data) return null;
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (value) => Math.round(value));
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useMotionValueEvent(rounded, "change", (latest) => {
+    setDisplayValue(latest);
+  });
+
+  useEffect(() => {
+    const controls = animate(count, data.vibeScore, {
+      duration: (data.vibeScore / 100) * 3,
+      ease: "easeOut",
+    });
+
+    return () => controls.stop();
+  }, [data.vibeScore, count]);
 
   const getScoreColor = (score: number) => {
     if (score <= 35) {
@@ -29,7 +52,7 @@ export default function VibeScore({ data }: VibeScoreProps) {
         hover: "hover:bg-yellow-100 dark:hover:bg-yellow-950/30",
         text: "text-yellow-700 dark:text-yellow-400",
         icon: "text-yellow-600 dark:text-yellow-500",
-        iconComponent: AlertTriangle,
+        iconComponent: TrendingUpDown,
       };
     } else {
       return {
@@ -47,27 +70,30 @@ export default function VibeScore({ data }: VibeScoreProps) {
   const Icon = colorScheme.iconComponent;
 
   return (
-    <div
-      className={`w-full my-4 border-2 rounded-lg px-4 py-3 shadow-md ${colorScheme.bg} ${colorScheme.hover} transition-colors`}
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className={`w-fit my-4 border-2 rounded-lg px-4 py-3 shadow-md ${colorScheme.bg} ${colorScheme.hover} transition-colors`}
     >
       <div className="flex items-center gap-3">
         <div className={`${colorScheme.icon} flex-shrink-0`}>
           <Icon size={24} />
         </div>
-        <div className="flex-1">
-          <div className="flex items-baseline gap-2">
-            <h1 className={`text-lg font-bold ${colorScheme.text}`}>
-              Vibe Score: {data.vibeScore}
-            </h1>
-            <span className="text-xs text-gray-500 dark:text-gray-400">
-              /100 
-            </span>
+        <div className="flex items-center gap-1">
+          <h1 className={`min-w-18 text-3xl font-bold ${colorScheme.text}`}>
+            {displayValue}%
+          </h1>
+          <div className="flex flex-col">
+            <p className="text-sm font-bold text-gray-600 dark:text-white">
+              {data.companyName}&apos;s
+            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              Vibe Score
+            </p>
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            {data.companyName}
-          </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

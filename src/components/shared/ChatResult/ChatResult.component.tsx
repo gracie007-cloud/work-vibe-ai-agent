@@ -48,6 +48,7 @@ export default function ChatResult({ messages, isStreaming }: ChatResultProps) {
                     </Tool>
                   );
                 case "tool-getVibeScore":
+                  if (!part.output) return null;
                   return (
                     <VibeScore
                       key={part.toolCallId || `${message.id}-${i}`}
