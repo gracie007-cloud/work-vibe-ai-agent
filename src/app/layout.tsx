@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Alegreya_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const alegreyaSans = Alegreya_Sans({
+  weight: ["400", "500", "700"],
+  variable: "--font-alegreya-sans",
   subsets: ["latin"],
 });
 
@@ -25,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
+        className={`${alegreyaSans.variable} ${geistMono.variable} antialiased dark`}
       >
         {children}
       </body>
