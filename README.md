@@ -1,4 +1,8 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Work Vibe
+
+An AI-powered company vibe checker that automates the tedious process of researching company culture and work environment. This tool uses Reddit data to analyze what people are saying about companies, helping you make informed decisions during your job search.
+
+Read more about how this project was built: [How I built an AI-Powered Company Vibe Checker](https://www.juanireyes.com/projects/work-vibe-ai-powered-company-vibe-checker)
 
 ## Getting Started
 
@@ -16,21 +20,58 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Configuration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### API Keys
 
-## Learn More
+You need to add the following environment variables to your `.env.local` file:
 
-To learn more about Next.js, take a look at the following resources:
+- **AI Model API Key** (choose one):
+  - `GOOGLE_API_KEY` - For Google models (e.g., `gemini-2.5-flash`)
+  - `OPENAI_API_KEY` - For OpenAI models (e.g., `gpt-4o-mini`)
+- **Reddit API Credentials** (optional):
+  - `REDDIT_CLIENT_ID` - Your Reddit API client ID (not required, but recommended for higher rate limits)
+  - `REDDIT_CLIENT_SECRET` - Your Reddit API client secret (not required, but recommended for higher rate limits)
+- **API URL**:
+  - `NEXT_PUBLIC_API_URL` - The base URL for your API (e.g., `http://localhost:3000` for local development)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Example `.env.local`:
+```
+# AI Model API Key (choose one)
+GOOGLE_API_KEY=your_google_api_key_here
+# or
+OPENAI_API_KEY=your_openai_api_key_here
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Reddit API Credentials (optional - recommended for higher rate limits)
+REDDIT_CLIENT_ID=your_reddit_client_id
+REDDIT_CLIENT_SECRET=your_reddit_client_secret
 
-## Deploy on Vercel
+# API URL
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Switching Models
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To switch between models, edit `/app/api/chat/route.ts`:
+
+**Using Google (default):**
+```typescript
+import { google } from "@ai-sdk/google";
+
+// In the streamText call:
+model: google("gemini-2.5-flash"),
+```
+
+**Switching to OpenAI:**
+```typescript
+import { openai } from "@ai-sdk/openai";
+
+// In the streamText call:
+model: openai("gpt-4o-mini"),
+```
+
+Make sure to comment out the model you're not using and uncomment the one you want to use.
+
+## Contributing
+
+All contributions are welcome! Feel free to open issues, submit pull requests, or suggest improvements.
